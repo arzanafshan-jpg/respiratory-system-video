@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Respiratory System — Educational Video</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{background:#f0f6ff;color:#1a2a4a;font-family:'Segoe UI','SF Pro Display',system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 10px 24px}
+
+.wrap{width:100%;max-width:1080px}
+
+/* HEADER */
+.hdr{text-align:center;padding:14px 0 12px}
+.hdr-label{font-size:9px;letter-spacing:5px;color:#e06020;text-transform:uppercase;margin-bottom:5px;font-weight:700}
+.hdr-title{font-size:24px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#1a2a4a}
+.hdr-title em{font-style:normal;color:#e06020}
+.hdr-sub{font-size:11px;color:#6080b0;margin-top:4px;letter-spacing:1px}
+
+/* PLAYER */
+.player{background:#ffffff;border:2px solid #d0ddf5;border-radius:16px;overflow:hidden;box-shadow:0 8px 48px rgba(60,100,200,0.13)}
+
+/* SCREEN */
+.screen{display:grid;grid-template-columns:1fr 320px;min-height:580px}
+
+/* DIAGRAM */
+.diag-area{position:relative;background:#f8faff;display:flex;align-items:center;justify-content:center;padding:10px;border-right:2px solid #e0eaff;overflow:hidden}
+
+/* TITLE OVERLAY */
+.title-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:40px;background:rgba(240,246,255,0.96);z-index:20;opacity:0;pointer-events:none;transition:opacity 0.7s}
+.title-ov.on{opacity:1}
+.ov-tag{font-size:9px;letter-spacing:5px;color:#e06020;text-transform:uppercase;font-weight:700}
+.ov-big{font-size:34px;font-weight:800;letter-spacing:2px;color:#1a2a4a;line-height:1.15}
+.ov-sub{font-size:12px;color:#5070a0;line-height:1.7;max-width:360px}
+
+/* INFO PANEL */
+.info-panel{padding:24px 18px;display:flex;flex-direction:column;gap:15px;background:#f4f8ff;overflow-y:auto;max-height:580px}
+.ch-tag{font-size:9px;letter-spacing:4px;color:#e06020;text-transform:uppercase;font-weight:700}
+.ch-title{font-size:18px;font-weight:700;color:#1a2a4a;line-height:1.3;margin-top:2px}
+.ch-desc{font-size:12px;color:#3a5070;line-height:1.9;border-left:3px solid #e06020;padding-left:11px;background:rgba(224,96,32,0.04);border-radius:0 6px 6px 0;padding:10px 10px 10px 13px}
+.divider{height:2px;background:linear-gradient(90deg,#e0eaff,transparent)}
+.ms-hdr{font-size:9px;letter-spacing:3px;color:#7090c0;text-transform:uppercase;margin-bottom:10px;font-weight:700}
+.m-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#ffffff;border:1.5px solid #d8e8ff;border-radius:8px;margin-bottom:6px;transition:all 0.2s;box-shadow:0 1px 4px rgba(60,100,200,0.06)}
+.m-row:hover{background:#eef4ff;border-color:#aaccff}
+.m-lbl{font-size:11px;color:#5070a0}
+.m-val{font-size:11.5px;font-weight:700;color:#e06020}
+.fact-box{padding:12px 14px;background:linear-gradient(135deg,#fff8e6,#fff3d4);border:2px solid #f0c060;border-radius:10px;margin-top:auto;box-shadow:0 2px 8px rgba(240,160,0,0.1)}
+.fact-lbl{font-size:8.5px;letter-spacing:3px;color:#c07820;text-transform:uppercase;margin-bottom:5px;font-weight:700}
+.fact-txt{font-size:11px;color:#7a5020;line-height:1.8;font-weight:500}
+
+/* CONTROLS */
+.controls{display:flex;align-items:center;gap:12px;padding:12px 18px;background:#eef4ff;border-top:2px solid #d0ddf5}
+.play-btn{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#e06020,#f08040);border:none;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;box-shadow:0 4px 14px rgba(224,96,32,0.35)}
+.play-btn:hover{transform:scale(1.08);box-shadow:0 6px 18px rgba(224,96,32,0.5)}
+.pi{width:0;height:0;border:solid transparent;border-width:6px 0 6px 11px;border-left-color:#fff;margin-left:2px}
+.pau{display:flex;gap:3px}
+.pb{width:3px;height:12px;background:#fff;border-radius:2px}
+.ctrl-btn{background:#ffffff;border:2px solid #ccd8f0;color:#5070a0;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;line-height:1;font-weight:700;box-shadow:0 1px 4px rgba(60,100,200,0.08)}
+.ctrl-btn:hover{background:#ddeeff;border-color:#88aadd;color:#2050a0}
+.prog-wrap{flex:1;display:flex;flex-direction:column;gap:7px}
+.prog-bar{height:6px;background:#d0ddf5;border-radius:3px;cursor:pointer;position:relative;border-radius:10px}
+.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#e06020,#f08040,#f0c040);transition:width 0.3s linear;box-shadow:0 0 6px rgba(224,96,32,0.4)}
+.ch-dots{display:flex;gap:4px;justify-content:center}
+.chd{height:4px;border-radius:4px;background:#c8d8f0;cursor:pointer;transition:all 0.22s;width:14px}
+.chd.on{background:#e06020;width:22px}
+.tdisp{font-size:10px;color:#7090b0;flex-shrink:0;font-weight:600}
+
+/* VOICEOVER BAR */
+.vo-bar{display:flex;align-items:center;gap:10px;padding:10px 18px;background:#fff8f0;border-top:2px solid #f0d0b0}
+.vo-icon{font-size:18px;flex-shrink:0}
+.vo-label{font-size:10px;color:#c07820;letter-spacing:2px;text-transform:uppercase;font-weight:700;flex-shrink:0}
+.vo-text{font-size:11px;color:#7a5030;flex:1;line-height:1.5;font-style:italic;min-height:28px;transition:opacity 0.3s}
+.vo-toggle{background:#fff3e0;border:2px solid #f0c060;color:#c07820;padding:4px 12px;border-radius:20px;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:1px;flex-shrink:0;transition:all 0.2s}
+.vo-toggle:hover{background:#ffe0a0;border-color:#e0a020}
+.vo-toggle.muted{background:#f0f0f0;border-color:#ccc;color:#999}
+
+/* FOOTER */
+.footer{display:flex;gap:12px;justify-content:center;padding:10px 0 0;font-size:10px;color:#8090b0;letter-spacing:1px}
+
+/* ── SVG ANATOMY STYLES — BRIGHT STUDENT-FRIENDLY ── */
+.bd-fill{fill:rgba(200,220,255,0.5);stroke:rgba(80,120,200,0.3);stroke-width:0.8}
+.rib{fill:none;stroke:rgba(80,120,200,0.2);stroke-width:0.7}
+.nasal-s{fill:rgba(255,140,60,0.2);stroke:rgba(255,120,40,0.7);stroke-width:1.4}
+.sep{stroke:rgba(255,120,40,0.5);stroke-width:0.8}
+.pha{fill:rgba(255,180,80,0.2);stroke:rgba(255,160,40,0.65);stroke-width:1.3}
+.lar{fill:rgba(60,180,255,0.18);stroke:rgba(40,160,255,0.7);stroke-width:1.4}
+.tra{fill:rgba(60,180,255,0.15);stroke:rgba(40,160,255,0.65);stroke-width:1.3}
+.ring{fill:none;stroke:rgba(40,160,255,0.45);stroke-width:0.8}
+.car{fill:rgba(40,160,255,0.6);stroke:rgba(20,140,255,0.9);stroke-width:0.9}
+.rl{fill:rgba(255,100,80,0.15);stroke:rgba(240,80,60,0.7);stroke-width:1.5}
+.ll{fill:rgba(255,100,80,0.12);stroke:rgba(240,80,60,0.6);stroke-width:1.5}
+.fis{fill:none;stroke:rgba(200,80,60,0.35);stroke-width:0.8;stroke-dasharray:3 2}
+.br1{fill:none;stroke:rgba(40,180,100,0.75);stroke-width:1.8;stroke-linecap:round}
+.br2{fill:none;stroke:rgba(40,180,100,0.55);stroke-width:1.2;stroke-linecap:round}
+.br3{fill:none;stroke:rgba(40,180,100,0.35);stroke-width:0.8;stroke-linecap:round}
+.dia{fill:rgba(180,80,255,0.08);stroke:rgba(160,60,240,0.75);stroke-width:2.4;stroke-linecap:round}
+.cten{fill:rgba(180,80,255,0.12);stroke:rgba(160,60,240,0.4);stroke-width:0.9}
+.alv-box{fill:rgba(255,255,255,0.95);stroke:rgba(40,180,100,0.4);stroke-width:1.2}
+.alv-c{fill:rgba(60,220,140,0.18);stroke:rgba(30,200,100,0.65);stroke-width:1}
+.ll-line{stroke:rgba(80,80,180,0.35);stroke-width:0.9;stroke-dasharray:3 2;fill:none}
+.ll-dot{fill:rgba(80,80,220,0.7)}
+.lt{fill:#1a2a6a;font-family:'Segoe UI',system-ui;font-size:10px;font-weight:700}
+.ls{fill:#5060a0;font-family:'Segoe UI',system-ui;font-size:8.5px;font-weight:500}
+
+/* Highlight/dim */
+.pg{transition:opacity 0.45s}
+.pg.dim{opacity:0.12}
+
+/* Breathing animation */
+@keyframes lung-exp{0%,100%{transform:scale(1)}45%,55%{transform:scale(1.065,1.05)}}
+@keyframes dia-move{0%,100%{transform:translateY(0)}45%,55%{transform:translateY(11px)}}
+@keyframes ptcl-dn{0%{transform:translateY(-4px);opacity:0}18%{opacity:0.9}82%{opacity:0.7}100%{transform:translateY(58px);opacity:0}}
+@keyframes ptcl-up{0%{transform:translateY(0);opacity:0}18%{opacity:0.8}82%{opacity:0.6}100%{transform:translateY(-62px);opacity:0}}
+.ba .lg-r{transform-origin:336px 308px;animation:lung-exp 5s ease-in-out infinite}
+.ba .lg-l{transform-origin:164px 308px;animation:lung-exp 5s ease-in-out infinite}
+.ba .dg{animation:dia-move 5s ease-in-out infinite}
+.ap{animation:ptcl-dn 2.6s ease-in infinite}
+.ap.up{animation:ptcl-up 2.6s ease-in infinite}
+.ap.d1{animation-delay:0s}.ap.d2{animation-delay:0.52s}.ap.d3{animation-delay:1.04s}.ap.d4{animation-delay:1.56s}.ap.d5{animation-delay:2.08s}
+
+/* Chapter badge */
+.ch-badge{display:inline-block;background:linear-gradient(135deg,#e06020,#f08040);color:#fff;font-size:8px;letter-spacing:2px;padding:2px 8px;border-radius:12px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hdr">
+  <div class="hdr-label">Anatomy &amp; Physiology · Interactive Guide</div>
+  <h1 class="hdr-title">THE <em>RESPIRATORY</em> SYSTEM</h1>
+  <p class="hdr-sub">Complete Anatomical Model · Measurements · Breathing Process · Voice-Over Narration</p>
+</header>
+
+<div class="player">
+  <div class="screen">
+
+    <!-- DIAGRAM PANEL -->
+    <div class="diag-area" id="diag-area">
+      <div class="title-ov on" id="title-ov">
+        <span class="ov-tag">Educational Video</span>
+        <div class="ov-big">RESPIRATORY<br>SYSTEM</div>
+        <p class="ov-sub">Detailed anatomical model with measurements, labeled parts, and complete breathing process animation</p>
+      </div>
+
+      <svg viewBox="0 0 500 598" id="main-svg" style="width:100%;max-width:476px">
+
+        <!-- ── BODY OUTLINE ── -->
+        <g id="g-body" class="pg">
+          <ellipse cx="250" cy="68" rx="50" ry="56" class="bd-fill"/>
+          <rect x="226" y="122" width="48" height="36" rx="4" class="bd-fill"/>
+          <path d="M 148,158 C 128,165 112,183 106,212 L 100,426 C 102,453 126,470 163,479 L 250,485 L 337,479 C 374,470 398,453 400,426 L 394,212 C 388,183 372,165 352,158 Z" class="bd-fill"/>
+          <path d="M 262,204 C 284,205 326,210 365,222" class="rib"/>
+          <path d="M 262,222 C 284,223 330,228 368,241" class="rib"/>
+          <path d="M 262,240 C 284,242 330,248 368,261" class="rib"/>
+          <path d="M 262,258 C 282,260 326,267 362,280" class="rib"/>
+          <path d="M 262,276 C 280,279 322,288 355,302" class="rib"/>
+          <path d="M 238,204 C 216,205 174,210 135,222" class="rib"/>
+          <path d="M 238,222 C 216,223 170,228 132,241" class="rib"/>
+          <path d="M 238,240 C 216,242 170,248 132,261" class="rib"/>
+          <path d="M 238,258 C 218,260 174,267 138,280" class="rib"/>
+          <path d="M 238,276 C 220,279 178,288 145,302" class="rib"/>
+        </g>
+
+        <!-- ── RIGHT LUNG ── -->
+        <g id="g-rl" class="lg-r pg">
+          <path d="M 266,192 C 268,175 283,162 307,157 C 332,151 362,155 384,172 C 402,186 408,213 408,247 C 409,294 406,354 396,405 C 386,442 365,462 338,464 C 310,467 285,452 268,432 C 256,418 252,394 253,368 C 251,326 257,278 262,247 Z" class="rl"/>
+          <path d="M 269,281 C 302,276 344,279 384,284" class="fis"/>
+          <path d="M 284,188 C 336,250 378,332 396,405" class="fis"/>
+        </g>
+
+        <!-- ── LEFT LUNG ── -->
+        <g id="g-ll" class="lg-l pg">
+          <path d="M 234,192 C 232,175 217,162 193,157 C 168,151 138,155 116,172 C 98,186 92,213 92,247 C 91,294 94,354 104,405 C 114,442 135,462 162,464 C 190,467 215,452 232,432 C 244,420 248,404 248,390 C 251,375 245,361 233,351 C 221,342 215,325 221,309 C 227,293 232,272 234,247 Z" class="ll"/>
+          <path d="M 216,188 C 164,250 122,332 104,405" class="fis"/>
+        </g>
+
+        <!-- ── NASAL CAVITY ── -->
+        <g id="g-nasal" class="pg">
+          <line x1="250" y1="25" x2="250" y2="90" stroke="rgba(255,120,40,0.4)" stroke-width="0.9" fill="none"/>
+          <path d="M 250,26 C 247,21 232,19 224,29 C 215,40 215,58 224,70 C 232,81 247,84 250,87" class="nasal-s"/>
+          <path d="M 250,26 C 253,21 268,19 276,29 C 285,40 285,58 276,70 C 268,81 253,84 250,87" class="nasal-s"/>
+        </g>
+
+        <!-- ── PHARYNX ── -->
+        <g id="g-pha" class="pg">
+          <rect x="226" y="92" width="48" height="48" rx="5" class="pha"/>
+          <path d="M 242,92 C 244,97 249,101 249,105" fill="none" stroke="rgba(255,160,40,0.3)" stroke-width="0.7"/>
+        </g>
+
+        <!-- ── LARYNX ── -->
+        <g id="g-lar" class="pg">
+          <rect x="224" y="140" width="52" height="44" rx="5" class="lar"/>
+          <path d="M 240,140 L 250,150 L 260,140" fill="rgba(240,248,255,0.6)" stroke="rgba(40,160,255,0.55)" stroke-width="0.9" stroke-linejoin="round"/>
+          <line x1="233" y1="158" x2="248" y2="158" stroke="rgba(40,160,255,0.45)" stroke-width="0.9"/>
+          <line x1="252" y1="158" x2="267" y2="158" stroke="rgba(40,160,255,0.45)" stroke-width="0.9"/>
+          <line x1="233" y1="165" x2="248" y2="165" stroke="rgba(40,160,255,0.3)" stroke-width="0.7"/>
+          <line x1="252" y1="165" x2="267" y2="165" stroke="rgba(40,160,255,0.3)" stroke-width="0.7"/>
+        </g>
+
+        <!-- ── TRACHEA ── -->
+        <g id="g-tra" class="pg">
+          <rect x="235" y="184" width="30" height="80" rx="4" class="tra"/>
+          <path d="M 238,191 Q 250,189 262,191" class="ring"/>
+          <path d="M 238,199 Q 250,197 262,199" class="ring"/>
+          <path d="M 238,207 Q 250,205 262,207" class="ring"/>
+          <path d="M 238,215 Q 250,213 262,215" class="ring"/>
+          <path d="M 238,223 Q 250,221 262,223" class="ring"/>
+          <path d="M 238,231 Q 250,229 262,231" class="ring"/>
+          <path d="M 238,239 Q 250,237 262,239" class="ring"/>
+          <path d="M 238,247 Q 250,245 262,247" class="ring"/>
+          <path d="M 238,255 Q 250,253 262,255" class="ring"/>
+          <circle cx="250" cy="264" r="3" class="car"/>
+        </g>
+
+        <!-- ── BRONCHI ── -->
+        <g id="g-br" class="pg">
+          <path d="M 250,264 C 265,268 290,278 315,290" class="br1"/>
+          <path d="M 250,264 C 235,268 210,278 185,290" class="br1"/>
+          <path d="M 315,290 C 322,278 330,264 337,250" class="br2"/>
+          <path d="M 315,290 C 336,290 356,292 366,295" class="br2"/>
+          <path d="M 315,290 C 323,308 333,332 335,360" class="br2"/>
+          <path d="M 185,290 C 178,278 170,264 163,250" class="br2"/>
+          <path d="M 185,290 C 177,308 167,332 165,360" class="br2"/>
+          <path d="M 337,250 C 346,242 356,234 363,224" class="br3"/>
+          <path d="M 337,250 C 350,248 362,246 372,244" class="br3"/>
+          <path d="M 366,295 C 378,287 390,281 397,275" class="br3"/>
+          <path d="M 366,295 C 378,299 388,307 394,317" class="br3"/>
+          <path d="M 335,360 C 344,354 356,350 366,347" class="br3"/>
+          <path d="M 335,360 C 342,371 349,383 351,397" class="br3"/>
+          <path d="M 163,250 C 154,242 144,234 137,224" class="br3"/>
+          <path d="M 163,250 C 150,248 138,246 128,244" class="br3"/>
+          <path d="M 165,360 C 156,354 144,350 134,347" class="br3"/>
+          <path d="M 165,360 C 158,371 151,383 149,397" class="br3"/>
+        </g>
+
+        <!-- ── DIAPHRAGM ── -->
+        <g id="g-dia" class="dg pg">
+          <path d="M 113,453 C 157,440 200,434 250,431 C 300,434 343,440 387,453" class="dia"/>
+          <ellipse cx="250" cy="431" rx="20" ry="7" class="cten"/>
+        </g>
+
+        <!-- ── ALVEOLI INSET ── -->
+        <g id="g-alv" transform="translate(362,476)">
+          <rect x="0" y="0" width="126" height="112" rx="7" class="alv-box"/>
+          <text x="63" y="13" text-anchor="middle" fill="rgba(30,180,100,0.85)" font-family="'Segoe UI',system-ui" font-size="8.5px" letter-spacing="1.2px" font-weight="700">ALVEOLI ×300M</text>
+          <circle cx="28" cy="39" r="15" class="alv-c"/>
+          <circle cx="55" cy="33" r="17" class="alv-c"/>
+          <circle cx="83" cy="39" r="15" class="alv-c"/>
+          <circle cx="22" cy="66" r="15" class="alv-c"/>
+          <circle cx="50" cy="71" r="16" class="alv-c"/>
+          <circle cx="80" cy="66" r="15" class="alv-c"/>
+          <line x1="49" y1="39" x2="44" y2="56" stroke="rgba(20,160,80,0.8)" stroke-width="1.3"/>
+          <text x="30" y="50" fill="rgba(20,160,80,0.95)" font-family="'Segoe UI',system-ui" font-size="9px" font-weight="700">O₂</text>
+          <line x1="59" y1="57" x2="65" y2="41" stroke="rgba(220,60,40,0.8)" stroke-width="1.3"/>
+          <text x="67" y="41" fill="rgba(220,60,40,0.95)" font-family="'Segoe UI',system-ui" font-size="9px" font-weight="700">CO₂</text>
+          <text x="63" y="95" text-anchor="middle" fill="rgba(30,180,100,0.7)" font-family="'Segoe UI',system-ui" font-size="8px">⌀ 0.2 mm each</text>
+          <text x="63" y="106" text-anchor="middle" fill="rgba(30,180,100,0.55)" font-family="'Segoe UI',system-ui" font-size="7.5px">Surface area ≈ 70 m²</text>
+        </g>
+
+        <!-- ── LEFT LABELS ── -->
+        <g id="g-lbl-l" class="pg">
+          <circle cx="224" cy="52" r="2" class="ll-dot"/>
+          <line x1="106" y1="50" x2="222" y2="52" class="ll-line"/>
+          <text x="102" y="47" text-anchor="end" class="lt">Nasal Cavity</text>
+          <text x="102" y="58" text-anchor="end" class="ls">10 cm long</text>
+
+          <circle cx="226" cy="116" r="2" class="ll-dot"/>
+          <line x1="106" y1="114" x2="224" y2="116" class="ll-line"/>
+          <text x="102" y="111" text-anchor="end" class="lt">Pharynx</text>
+          <text x="102" y="122" text-anchor="end" class="ls">12–14 cm</text>
+
+          <circle cx="224" cy="162" r="2" class="ll-dot"/>
+          <line x1="106" y1="160" x2="222" y2="162" class="ll-line"/>
+          <text x="102" y="157" text-anchor="end" class="lt">Larynx</text>
+          <text x="102" y="168" text-anchor="end" class="ls">4–5 cm</text>
+
+          <circle cx="210" cy="278" r="2" class="ll-dot"/>
+          <line x1="106" y1="275" x2="208" y2="278" class="ll-line"/>
+          <text x="102" y="272" text-anchor="end" class="lt">L. Bronchus</text>
+          <text x="102" y="283" text-anchor="end" class="ls">~5 cm long</text>
+
+          <circle cx="148" cy="336" r="2" class="ll-dot"/>
+          <line x1="106" y1="333" x2="146" y2="336" class="ll-line"/>
+          <text x="102" y="330" text-anchor="end" class="lt">Left Lung</text>
+          <text x="102" y="341" text-anchor="end" class="ls">~600 g · 2 lobes</text>
+        </g>
+
+        <!-- ── RIGHT LABELS ── -->
+        <g id="g-lbl-r" class="pg">
+          <circle cx="265" cy="225" r="2" class="ll-dot"/>
+          <line x1="267" y1="225" x2="390" y2="222" class="ll-line"/>
+          <text x="394" y="219" class="lt">Trachea</text>
+          <text x="394" y="230" class="ls">11 cm × 2.5 cm ⌀</text>
+
+          <circle cx="290" cy="278" r="2" class="ll-dot"/>
+          <line x1="292" y1="278" x2="390" y2="263" class="ll-line"/>
+          <text x="394" y="260" class="lt">R. Bronchus</text>
+          <text x="394" y="271" class="ls">~2.5 cm long</text>
+
+          <circle cx="362" cy="336" r="2" class="ll-dot"/>
+          <line x1="364" y1="336" x2="390" y2="310" class="ll-line"/>
+          <text x="394" y="307" class="lt">Right Lung</text>
+          <text x="394" y="318" class="ls">~700 g · 3 lobes</text>
+
+          <circle cx="336" cy="442" r="2" class="ll-dot"/>
+          <line x1="338" y1="442" x2="390" y2="450" class="ll-line"/>
+          <text x="394" y="447" class="lt">Diaphragm</text>
+          <text x="394" y="458" class="ls">3–5 mm thick</text>
+        </g>
+
+        <!-- ── AIR PARTICLES ── -->
+        <g id="g-particles" style="opacity:0">
+          <circle class="ap d1" cx="243" cy="100" r="2.5" fill="rgba(40,160,255,0.9)"/>
+          <circle class="ap d2" cx="250" cy="100" r="2.5" fill="rgba(40,160,255,0.9)"/>
+          <circle class="ap d3" cx="257" cy="100" r="2.5" fill="rgba(40,160,255,0.9)"/>
+          <circle class="ap d4" cx="246" cy="100" r="2" fill="rgba(40,160,255,0.7)"/>
+          <circle class="ap d5" cx="254" cy="100" r="2" fill="rgba(40,160,255,0.7)"/>
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- INFO PANEL -->
+    <div class="info-panel">
+      <div id="ch-tag" class="ch-tag">INTRODUCTION</div>
+      <h2 id="ch-title" class="ch-title">The Respiratory System</h2>
+      <p id="ch-desc" class="ch-desc">The respiratory system is responsible for gas exchange — delivering oxygen to every cell and removing carbon dioxide. It spans from the nostrils to hundreds of millions of microscopic alveoli deep in the lungs.</p>
+      <div class="divider"></div>
+      <div>
+        <div class="ms-hdr" id="ms-hdr">KEY MEASUREMENTS</div>
+        <div id="ms-list"></div>
+      </div>
+      <div class="fact-box">
+        <div class="fact-lbl">💡 Did You Know</div>
+        <p id="fact-txt" class="fact-txt">You breathe approximately 22,000 times per day — completely automatically, without any conscious thought.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="ctrl-btn" id="btn-prev" onclick="prevCh()">‹</button>
+    <button class="play-btn" id="btn-play" onclick="togglePlay()">
+      <span id="pi" class="pi"></span>
+    </button>
+    <button class="ctrl-btn" id="btn-next" onclick="nextCh()">›</button>
+    <div class="prog-wrap">
+      <div class="prog-bar">
+        <div id="prog-fill" class="prog-fill" style="width:0%"></div>
+      </div>
+      <div id="ch-dots" class="ch-dots"></div>
+    </div>
+    <div class="tdisp" id="tdisp">0:00</div>
+  </div>
+
+  <!-- VOICE-OVER BAR -->
+  <div class="vo-bar">
+    <span class="vo-icon">🔊</span>
+    <span class="vo-label">Voice Over</span>
+    <span class="vo-text" id="vo-text">Press Play to hear narration for each chapter.</span>
+    <button class="vo-toggle" id="vo-toggle" onclick="toggleVO()">ON</button>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <span>Respiratory System</span><span>·</span>
+  <span>Complete Anatomical Model</span><span>·</span>
+  <span>Voice-Over Narration Enabled</span>
+</footer>
+</div>
+
+<script>
+// ── VOICE-OVER SCRIPTS (one per chapter) ──
+const VO_SCRIPTS = [
+  "Welcome! Today we will explore the respiratory system — the organ system responsible for breathing. It delivers oxygen to every cell in your body, and removes carbon dioxide waste.",
+  "The respiratory system has two main parts: the upper airway, which includes the nose and throat, and the lower airway, including the trachea, bronchi, and lungs. Together, they form a pathway about 2,400 kilometres long!",
+  "Air enters through the nasal cavity — two chambers in your nose. Tiny hairs and mucus filter dust and germs. The nasal cavity also warms and moistens the air to protect your delicate lungs.",
+  "From the nose, air passes through the pharynx — your throat — and then through the larynx, also called the voice box. The epiglottis acts as a flap that closes when you swallow, preventing food from entering your airway.",
+  "The trachea, or windpipe, is a tube about 11 centimetres long reinforced by 16 to 20 C-shaped cartilage rings. These rings keep the airway permanently open so it can never collapse. It divides at the bottom into two bronchi.",
+  "We have two lungs. The right lung is slightly larger with 3 lobes, while the left lung has only 2 lobes — making room for the heart. Together they can hold up to 6 litres of air.",
+  "Inside each lung, the bronchi branch again and again — 23 times in total — becoming smaller and smaller like the branches of a tree. The finest branches are called bronchioles, less than half a millimetre wide.",
+  "At the end of the bronchioles are tiny air sacs called alveoli. There are around 300 million of them, giving a total surface area the size of a tennis court — about 70 square metres! Oxygen passes into the blood here, and carbon dioxide passes out.",
+  "When you breathe in, the diaphragm — a dome-shaped muscle below the lungs — contracts and moves downward. This increases the space in the chest, air pressure drops, and fresh air rushes in through the nose and mouth.",
+  "When you breathe out, the diaphragm relaxes and rises back up, gently squeezing air out of the lungs. At rest, this is completely effortless — the natural elasticity of the lungs does all the work.",
+  "Gas exchange happens across the ultra-thin walls of the alveoli. Oxygen diffuses from the air into the surrounding blood vessels, while carbon dioxide moves from the blood into the air to be breathed out. This process takes less than one second.",
+  "Now watch as the respiratory system model is built layer by layer — from the body outline to the full labelled diagram. This shows how each structure sits inside the chest and connects to the others."
+];
+
+const CHAPTERS = [
+  {tag:"INTRODUCTION",title:"The Respiratory System",dur:5,overlay:true,
+   desc:"The respiratory system is responsible for gas exchange — delivering oxygen to every cell and removing carbon dioxide. It spans from the nostrils to hundreds of millions of microscopic alveoli deep in the lungs.",
+   ms:[{l:"Total lung capacity",v:"~6 litres"},{l:"Breathing rate (adult)",v:"12–20 / min"},{l:"Daily air intake",v:"~11,000 L"},{l:"O₂ in inhaled air",v:"21%"}],
+   fact:"You breathe approximately 22,000 times per day — completely automatically, without any conscious thought.",
+   hl:null,breathe:false,making:false},
+
+  {tag:"OVERVIEW",title:"System Overview",dur:8,overlay:false,
+   desc:"The respiratory system divides into the upper tract (nasal cavity → larynx) and lower tract (trachea → alveoli). Air enters through the nose, where it is warmed, filtered, and humidified before reaching the delicate lung tissue.",
+   ms:[{l:"Upper tract structures",v:"5 main parts"},{l:"Lower tract structures",v:"Trachea + bronchi + lungs"},{l:"Total airway length",v:"~2,400 km"},{l:"Respiratory muscles",v:"Diaphragm + intercostals"}],
+   fact:"The airways branch 23 times from the trachea to the alveoli — like an upside-down tree.",
+   hl:"all",breathe:false,making:false},
+
+  {tag:"PART 1 · UPPER AIRWAY",title:"Nasal Cavity",dur:8,overlay:false,
+   desc:"The nasal cavity is the entry point for air. Lined with mucous membranes and tiny cilia, it filters particles, warms incoming air to ~34°C, and humidifies it. The nasal septum divides it into two chambers.",
+   ms:[{l:"Length",v:"~10 cm"},{l:"Height",v:"~5 cm"},{l:"Volume",v:"~15–20 mL"},{l:"Air warmed to",v:"~34°C"},{l:"Particle filtration",v:"≥ 10 µm"}],
+   fact:"The nasal cavity can warm air from −10°C outside to near body temperature before it reaches the lungs.",
+   hl:"nasal",breathe:false,making:false},
+
+  {tag:"PART 2 · UPPER AIRWAY",title:"Pharynx & Larynx",dur:8,overlay:false,
+   desc:"The pharynx (throat) is shared by the digestive and respiratory systems. It leads to the larynx (voice box), which contains the vocal cords. The epiglottis flaps over the larynx during swallowing to prevent food from entering the airway.",
+   ms:[{l:"Pharynx length",v:"12–14 cm"},{l:"Pharynx diameter",v:"~3.5 cm"},{l:"Larynx height",v:"4–5 cm"},{l:"Vocal cord length ♂",v:"~17 mm"},{l:"Vocal cord length ♀",v:"~13 mm"}],
+   fact:"The larynx is also called the 'voice box' — vocal cords vibrate to produce sound, and their tension determines pitch.",
+   hl:"pharynx-larynx",breathe:false,making:false},
+
+  {tag:"PART 3 · LOWER AIRWAY",title:"Trachea",dur:8,overlay:false,
+   desc:"The trachea (windpipe) connects the larynx to the bronchi. It is reinforced by 16–20 C-shaped cartilage rings that keep it permanently open. It bifurcates at the carina (T4–T5 level) into the two main bronchi.",
+   ms:[{l:"Length",v:"10–12 cm"},{l:"Diameter",v:"~2.5 cm"},{l:"Cartilage rings",v:"16–20 rings"},{l:"Vertebral level",v:"C6 → T4/T5"},{l:"Cilia beat rate",v:"~1,000 / min"}],
+   fact:"The mucociliary escalator moves mucus upward at 1–2 cm/min, trapping and clearing dust, microbes, and debris.",
+   hl:"trachea",breathe:false,making:false},
+
+  {tag:"PART 4 · LUNGS",title:"The Lungs",dur:9,overlay:false,
+   desc:"The lungs are the primary organs of respiration. The right lung has 3 lobes; the left has only 2, with a cardiac notch accommodating the heart. Both lungs are wrapped in the pleural membranes, which reduce friction during breathing.",
+   ms:[{l:"Right lung weight",v:"~700 g"},{l:"Left lung weight",v:"~600 g"},{l:"Right lung — lobes",v:"3 (upper/middle/lower)"},{l:"Left lung — lobes",v:"2 (upper/lower)"},{l:"Right lung height",v:"~25 cm"},{l:"Combined volume",v:"~4.5–6 L"}],
+   fact:"The left lung is ~15% smaller than the right to make space for the heart — this indentation is called the cardiac notch.",
+   hl:"lungs",breathe:false,making:false},
+
+  {tag:"PART 5 · BRONCHIAL TREE",title:"Bronchi & Bronchioles",dur:8,overlay:false,
+   desc:"The trachea splits at the carina into the right and left main (primary) bronchi. Each divides into lobar (secondary), then segmental (tertiary) bronchi, then bronchioles — 23 generations total. The final branches are terminal and respiratory bronchioles.",
+   ms:[{l:"Right main bronchus",v:"~2.5 cm long"},{l:"Left main bronchus",v:"~5 cm long"},{l:"Terminal bronchioles",v:"~0.5 mm ⌀"},{l:"Branching generations",v:"23 levels"},{l:"Total cross-section",v:"increases 4000×"}],
+   fact:"The right main bronchus is shorter and more vertical — inhaled foreign objects more often lodge in the right lung.",
+   hl:"bronchi",breathe:false,making:false},
+
+  {tag:"PART 6 · GAS EXCHANGE UNITS",title:"Alveoli",dur:8,overlay:false,
+   desc:"Alveoli are the tiny air sacs where gas exchange occurs. Each alveolus is surrounded by a dense network of capillaries — so thin that red blood cells pass through single-file. O₂ diffuses in; CO₂ diffuses out.",
+   ms:[{l:"Alveoli count",v:"~300 million"},{l:"Diameter (each)",v:"~0.2 mm (200 µm)"},{l:"Wall thickness",v:"~0.5 µm"},{l:"Total surface area",v:"~70 m²"},{l:"Capillary length",v:"~1,000 km"}],
+   fact:"The alveolar wall is thinner than a soap bubble — 0.5 µm — allowing gases to diffuse across it in under a millisecond.",
+   hl:"alveoli",breathe:false,making:false},
+
+  {tag:"PROCESS · BREATHING IN",title:"Inhalation",dur:10,overlay:false,
+   desc:"During inhalation, the diaphragm contracts and flattens, moving downward. The intercostal muscles expand the rib cage outward. This increases thoracic volume, drops intra-pulmonary pressure below atmospheric, and air rushes in through the nose and mouth.",
+   ms:[{l:"Duration",v:"~1.5–2 sec"},{l:"Volume (tidal)",v:"~500 mL"},{l:"Diaphragm movement",v:"1–10 cm"},{l:"Pressure drop",v:"−2 to −3 cmH₂O"},{l:"Diaphragm does",v:"~80% of breathing work"}],
+   fact:"During forced inhalation (deep breath), the lungs can expand to hold up to 6 litres — 12× the normal tidal volume.",
+   hl:"all",breathe:"in",making:false},
+
+  {tag:"PROCESS · BREATHING OUT",title:"Exhalation",dur:10,overlay:false,
+   desc:"During quiet exhalation, the diaphragm relaxes and rises back to its dome shape. The rib cage recoils inward. Lung elasticity passively pushes air out — no muscle effort is needed. Active (forced) exhalation recruits abdominal muscles.",
+   ms:[{l:"Duration (quiet)",v:"~2–3 sec"},{l:"Volume exhaled",v:"~500 mL"},{l:"Residual volume",v:"~1,200 mL"},{l:"CO₂ exhaled daily",v:"~200 g"},{l:"Lung recoil pressure",v:"+2 to +3 cmH₂O"}],
+   fact:"At rest, exhalation is completely passive — the elasticity stored in lung tissue during inhalation drives the air back out.",
+   hl:"all",breathe:"out",making:false},
+
+  {tag:"PROCESS · RESPIRATION",title:"Gas Exchange",dur:9,overlay:false,
+   desc:"At the alveolar surface, O₂ diffuses from air into the blood along a concentration gradient, binding to haemoglobin in red blood cells. CO₂ moves from the blood (where it is at higher concentration) into the alveolar air to be exhaled.",
+   ms:[{l:"O₂ in inhaled air",v:"21%"},{l:"O₂ in exhaled air",v:"~16%"},{l:"CO₂ in inhaled air",v:"0.04%"},{l:"CO₂ in exhaled air",v:"~4%"},{l:"Blood transit time",v:"~0.75 sec"}],
+   fact:"Blood picks up ~5 mL O₂ per 100 mL as it passes through the lungs, releasing it to tissues throughout the entire body.",
+   hl:"alveoli",breathe:false,making:false},
+
+  {tag:"MAKING PROCESS",title:"Model Construction",dur:16,overlay:false,
+   desc:"Watch the respiratory system model being built step by step — from the basic body outline to the fully labelled anatomical diagram with all measurements. Each layer adds a new anatomical structure.",
+   ms:[{l:"Step 1",v:"Body outline & torso"},{l:"Step 2",v:"Head & nasal cavity"},{l:"Step 3",v:"Pharynx"},{l:"Step 4",v:"Larynx"},{l:"Step 5",v:"Trachea"},{l:"Step 6",v:"Lung shapes"},{l:"Step 7",v:"Bronchial tree"},{l:"Step 8",v:"Diaphragm + alveoli"},{l:"Step 9",v:"Labels & measurements"},{l:"Complete",v:"Full model"}],
+   fact:"Building anatomical models in layers — from skeleton to organs to labels — mirrors how medical students learn spatial anatomy.",
+   hl:null,breathe:false,making:true}
+];
+
+const ALL_GROUPS = ['g-body','g-rl','g-ll','g-nasal','g-pha','g-lar','g-tra','g-br','g-dia','g-alv','g-lbl-l','g-lbl-r'];
+const MAKING_STEPS = [
+  ['g-body'],['g-nasal'],['g-pha'],['g-lar'],['g-tra'],
+  ['g-rl','g-ll'],['g-br'],['g-dia','g-alv'],['g-lbl-l','g-lbl-r']
+];
+const HL_MAP = {
+  null:null, all:ALL_GROUPS, nasal:['g-nasal'],
+  'pharynx-larynx':['g-pha','g-lar'], trachea:['g-tra'],
+  lungs:['g-rl','g-ll'], bronchi:['g-br'], alveoli:['g-alv']
+};
+
+let cur=0, playing=false, elapsed=0;
+let ticker=null, makeTimers=[], makeIdx=-1;
+let voEnabled=true, voUtterance=null;
+
+// ── VOICE-OVER ENGINE ──
+function speakChapter(idx) {
+  if(!voEnabled) return;
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const script = VO_SCRIPTS[idx];
+  if(!script) return;
+  document.getElementById('vo-text').style.opacity='0.5';
+  setTimeout(()=>{
+    document.getElementById('vo-text').textContent = script;
+    document.getElementById('vo-text').style.opacity='1';
+  },200);
+  voUtterance = new SpeechSynthesisUtterance(script);
+  voUtterance.rate = 0.92;
+  voUtterance.pitch = 1.05;
+  voUtterance.volume = 1;
+  // Try to find a clear English voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v=>v.lang==='en-GB'||v.name.includes('Google UK')||v.name.includes('Daniel'))||
+                    voices.find(v=>v.lang.startsWith('en'))||voices[0];
+  if(preferred) voUtterance.voice=preferred;
+  window.speechSynthesis.speak(voUtterance);
+}
+
+function stopVO() {
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function toggleVO() {
+  voEnabled=!voEnabled;
+  const btn=document.getElementById('vo-toggle');
+  if(voEnabled){
+    btn.textContent='ON'; btn.classList.remove('muted');
+    if(playing) speakChapter(cur);
+  } else {
+    btn.textContent='OFF'; btn.classList.add('muted');
+    stopVO();
+    document.getElementById('vo-text').textContent='Voice-over is muted.';
+  }
+}
+
+function totalDur(){return CHAPTERS.reduce((s,c)=>s+c.dur,0);}
+function chStart(n){let s=0;for(let i=0;i<n;i++)s+=CHAPTERS[i].dur;return s;}
+function globalElapsed(){return chStart(cur)+elapsed;}
+function formatTime(s){const m=Math.floor(s/60),ss=Math.floor(s%60);return m+':'+(ss<10?'0':'')+ss;}
+
+function buildDots(){
+  const c=document.getElementById('ch-dots');
+  c.innerHTML='';
+  CHAPTERS.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='chd'+(i===cur?' on':'');
+    d.onclick=()=>goTo(i);
+    c.appendChild(d);
+  });
+}
+
+function renderInfo(ch){
+  document.getElementById('ch-tag').textContent=ch.tag;
+  document.getElementById('ch-title').textContent=ch.title;
+  document.getElementById('ch-desc').textContent=ch.desc;
+  document.getElementById('fact-txt').textContent=ch.fact;
+  const ml=document.getElementById('ms-list');
+  ml.innerHTML='';
+  (ch.ms||[]).forEach(m=>{
+    const r=document.createElement('div');
+    r.className='m-row';
+    r.innerHTML=`<span class="m-lbl">${m.l}</span><span class="m-val">${m.v}</span>`;
+    ml.appendChild(r);
+  });
+}
+
+function setHighlight(hl){
+  ALL_GROUPS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(!hl||hl===ALL_GROUPS||hl===null){el.style.opacity='';return;}
+    const keys=HL_MAP[hl]||[];
+    el.style.opacity=keys.includes(id)?'1':'0.1';
+  });
+}
+function showAll(){ALL_GROUPS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.opacity='1';});}
+
+function startMaking(){
+  ALL_GROUPS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.opacity='0';});
+  makeIdx=0;
+  const stepDur=(CHAPTERS[11].dur-1)/MAKING_STEPS.length*1000;
+  MAKING_STEPS.forEach((grps,i)=>{
+    const t=setTimeout(()=>{
+      grps.forEach(id=>{const el=document.getElementById(id);if(el){el.style.transition='opacity 0.8s';el.style.opacity='1';}});
+    },500+i*stepDur);
+    makeTimers.push(t);
+  });
+}
+function stopMaking(){
+  makeTimers.forEach(t=>clearTimeout(t));
+  makeTimers=[];
+  ALL_GROUPS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.transition='opacity 0.45s';});
+}
+function setBreathe(type){
+  const svg=document.getElementById('main-svg');
+  const pts=document.getElementById('g-particles');
+  svg.classList.remove('ba');
+  if(pts){pts.style.opacity='0';}
+  const aps=document.querySelectorAll('.ap');
+  aps.forEach(a=>{a.classList.remove('up');if(type==='out')a.classList.add('up');});
+  if(type){svg.classList.add('ba');if(pts){pts.style.opacity='1';}}
+}
+
+function applyChapter(ch,isNew){
+  const ov=document.getElementById('title-ov');
+  if(ch.overlay){ov.classList.add('on');}else{ov.classList.remove('on');}
+  renderInfo(ch);
+  stopMaking();
+  if(ch.making){startMaking();}
+  setBreathe(ch.breathe);
+  if(!ch.making){
+    if(ch.hl==='all'||ch.hl===null)showAll();
+    else setHighlight(ch.hl);
+  }
+  buildDots();
+  if(isNew&&playing) speakChapter(cur);
+}
+
+function goTo(n){
+  stopTicker();
+  stopVO();
+  cur=Math.max(0,Math.min(n,CHAPTERS.length-1));
+  elapsed=0;
+  applyChapter(CHAPTERS[cur],true);
+  updateProgress();
+  if(playing)startTicker();
+}
+
+function startTicker(){
+  ticker=setInterval(()=>{
+    elapsed+=0.1;
+    if(elapsed>=CHAPTERS[cur].dur){
+      elapsed=0;
+      if(cur<CHAPTERS.length-1){
+        cur++;
+        applyChapter(CHAPTERS[cur],true);
+      } else {
+        playing=false;
+        updatePlayBtn();
+        stopTicker();
+        stopVO();
+        document.getElementById('vo-text').textContent='Lesson complete! Press play to restart, or click any chapter dot.';
+        return;
+      }
+    }
+    updateProgress();
+  },100);
+}
+function stopTicker(){if(ticker){clearInterval(ticker);ticker=null;}}
+
+function updateProgress(){
+  const g=globalElapsed(),tot=totalDur();
+  document.getElementById('prog-fill').style.width=(g/tot*100)+'%';
+  document.getElementById('tdisp').textContent=formatTime(g)+' / '+formatTime(tot);
+  buildDots();
+}
+function updatePlayBtn(){
+  const pi=document.getElementById('pi');
+  if(playing){pi.className='';pi.innerHTML='<div class="pau"><div class="pb"></div><div class="pb"></div></div>';}
+  else{pi.className='pi';pi.innerHTML='';}
+}
+function togglePlay(){
+  playing=!playing;
+  updatePlayBtn();
+  if(playing){
+    startTicker();
+    speakChapter(cur);
+  } else {
+    stopTicker();
+    stopVO();
+  }
+}
+function prevCh(){goTo(cur-1);}
+function nextCh(){goTo(cur+1);}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // Load voices on some browsers
+  window.speechSynthesis.onvoiceschanged=()=>{};
+  window.speechSynthesis.getVoices();
+  buildDots();
+  renderInfo(CHAPTERS[0]);
+  updateProgress();
+  document.getElementById('vo-text').textContent='Press ▶ Play to begin — narration will start automatically.';
+  setTimeout(()=>{
+    playing=true;
+    updatePlayBtn();
+    startTicker();
+    speakChapter(0);
+  },1200);
+});
+</script>
+</body>
+</html>
