@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Respiratory System Assessment</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:#f0f6ff;color:#1a2a4a;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;padding:24px 16px 48px}
+.container{max-width:820px;margin:0 auto}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1a2a4a,#2a3f72);border-radius:16px;padding:32px;margin-bottom:28px;color:#fff;text-align:center}
+.header-tag{font-size:10px;letter-spacing:5px;color:#f08040;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+.header-title{font-size:28px;font-weight:800;letter-spacing:2px;margin-bottom:6px}
+.header-title em{font-style:normal;color:#f08040}
+.header-sub{font-size:12px;color:#a0b8e0;letter-spacing:1px;margin-bottom:18px}
+.score-bar{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.score-chip{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:8px 18px;font-size:11px;letter-spacing:1px}
+.score-chip span{display:block;font-size:18px;font-weight:800;color:#f08040;margin-top:2px}
+
+/* SECTION */
+.section{background:#fff;border:2px solid #d0ddf5;border-radius:16px;overflow:hidden;margin-bottom:24px;box-shadow:0 4px 24px rgba(60,100,200,0.08)}
+.section-header{background:linear-gradient(90deg,#1a2a4a,#2a4080);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+.section-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(255,255,255,0.15);flex-shrink:0}
+.section-meta{flex:1}
+.section-tag{font-size:9px;letter-spacing:4px;color:#f0a060;text-transform:uppercase;font-weight:700}
+.section-title{font-size:17px;font-weight:700;margin-top:2px}
+.section-pts{background:#f08040;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+
+/* QUESTION CARD */
+.q-card{padding:20px 24px;border-bottom:1px solid #e8f0ff}
+.q-card:last-child{border-bottom:none}
+.q-num{font-size:10px;letter-spacing:3px;color:#e06020;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.q-text{font-size:14px;font-weight:600;color:#1a2a4a;line-height:1.6;margin-bottom:14px}
+.q-pts-badge{display:inline-block;background:#eef4ff;border:1px solid #c0d4ff;color:#3060b0;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle}
+
+/* MCQ OPTIONS */
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid #d0ddf5;border-radius:10px;cursor:pointer;transition:all 0.18s;background:#f8faff}
+.opt:hover{background:#eef4ff;border-color:#90b0ff}
+.opt.selected{background:#e8f0ff;border-color:#3060d0}
+.opt.correct{background:#e6f5ee;border-color:#28a060;pointer-events:none}
+.opt.wrong{background:#fdecea;border-color:#d04030;pointer-events:none}
+.opt.reveal-correct{background:#e6f5ee;border-color:#28a060;pointer-events:none}
+.opt-letter{width:24px;height:24px;border-radius:6px;background:#d0ddf5;color:#4060a0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.18s}
+.opt.selected .opt-letter{background:#3060d0;color:#fff}
+.opt.correct .opt-letter{background:#28a060;color:#fff}
+.opt.wrong .opt-letter{background:#d04030;color:#fff}
+.opt.reveal-correct .opt-letter{background:#28a060;color:#fff}
+.opt-text{font-size:13px;color:#2a3a60;line-height:1.5;flex:1}
+
+/* TRUE/FALSE */
+.tf-group{display:flex;gap:12px}
+.tf-btn{flex:1;padding:10px;border:1.5px solid #d0ddf5;border-radius:10px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;background:#f8faff;transition:all 0.18s;color:#2a3a60}
+.tf-btn:hover{background:#eef4ff;border-color:#90b0ff}
+.tf-btn.selected{background:#e8f0ff;border-color:#3060d0;color:#1a2a4a}
+.tf-btn.correct{background:#e6f5ee;border-color:#28a060;color:#186040;pointer-events:none}
+.tf-btn.wrong{background:#fdecea;border-color:#d04030;color:#a02020;pointer-events:none}
+.tf-btn.reveal-correct{background:#e6f5ee;border-color:#28a060;color:#186040;pointer-events:none}
+
+/* SUBJECTIVE */
+.subj-input{width:100%;min-height:80px;padding:12px 14px;border:1.5px solid #d0ddf5;border-radius:10px;font-family:inherit;font-size:13px;color:#1a2a4a;background:#f8faff;resize:vertical;line-height:1.6;transition:border 0.18s}
+.subj-input:focus{outline:none;border-color:#4070e0;background:#fff}
+.subj-input:disabled{background:#f0f4fa;color:#6080a0}
+.model-answer{display:none;margin-top:12px;padding:12px 14px;background:linear-gradient(135deg,#e6f5ee,#d8f0e4);border:1.5px solid #50b880;border-radius:10px}
+.model-answer.show{display:block}
+.ma-label{font-size:10px;letter-spacing:3px;color:#2a8050;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+.ma-text{font-size:13px;color:#1a5030;line-height:1.7}
+.self-score{margin-top:10px;display:none}
+.self-score.show{display:flex;gap:8px;align-items:center}
+.self-label{font-size:12px;color:#4a6080;font-weight:600}
+.self-btns{display:flex;gap:6px}
+.self-btn{padding:5px 14px;border:1.5px solid #d0ddf5;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;background:#fff;color:#4a6080;transition:all 0.15s}
+.self-btn:hover{border-color:#90b0ff;background:#eef4ff}
+.self-btn.selected-full{background:#e6f5ee;border-color:#28a060;color:#186040}
+.self-btn.selected-half{background:#fff8e0;border-color:#c09000;color:#806000}
+.self-btn.selected-zero{background:#fdecea;border-color:#d04030;color:#a02020}
+
+/* FEEDBACK */
+.feedback{display:none;margin-top:10px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:600}
+.feedback.show{display:block}
+.feedback.ok{background:#e6f5ee;color:#186040;border:1px solid #50b880}
+.feedback.no{background:#fdecea;color:#a02020;border:1px solid #d06050}
+
+/* ACTIONS */
+.actions{padding:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:12px 32px;background:linear-gradient(135deg,#e06020,#f08040);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.2s;box-shadow:0 4px 14px rgba(224,96,32,0.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(224,96,32,0.45)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-secondary{padding:12px 24px;background:#fff;color:#3060b0;border:2px solid #c0d4ff;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.18s}
+.btn-secondary:hover{background:#eef4ff;border-color:#6090e0}
+
+/* RESULTS */
+.results{display:none;background:#fff;border:2px solid #d0ddf5;border-radius:16px;padding:32px;margin-bottom:24px;text-align:center;box-shadow:0 4px 24px rgba(60,100,200,0.08)}
+.results.show{display:block}
+.res-title{font-size:11px;letter-spacing:4px;color:#e06020;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.res-score{font-size:64px;font-weight:800;color:#1a2a4a;line-height:1}
+.res-total{font-size:20px;color:#6080b0;margin-bottom:8px}
+.res-grade{font-size:22px;font-weight:700;margin-top:12px;margin-bottom:6px}
+.res-msg{font-size:14px;color:#5070a0;line-height:1.7;max-width:480px;margin:0 auto 20px}
+.res-bars{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.res-bar{background:#f4f8ff;border:1.5px solid #d0ddf5;border-radius:12px;padding:14px 20px;min-width:140px}
+.rb-label{font-size:11px;color:#6080b0;letter-spacing:1px;text-transform:uppercase}
+.rb-val{font-size:22px;font-weight:800;color:#e06020;margin-top:4px}
+.rb-max{font-size:11px;color:#8090b0}
+
+/* PROGRESS */
+.progress-wrap{padding:16px 24px 0;display:flex;gap:8px;align-items:center}
+.prog-track{flex:1;height:6px;background:#d0ddf5;border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#e06020,#f08040);width:0%;transition:width 0.4s}
+.prog-label{font-size:11px;color:#7090b0;font-weight:600;min-width:60px;text-align:right}
+
+/* INSTRUCTIONS */
+.instructions{background:linear-gradient(135deg,#fff8e6,#fff3d4);border:2px solid #f0c060;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.inst-label{font-size:9px;letter-spacing:3px;color:#c07820;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.inst-text{font-size:12px;color:#7a5020;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-tag">Anatomy &amp; Physiology · Chapter Test</div>
+  <h1 class="header-title">THE <em>RESPIRATORY</em> SYSTEM</h1>
+  <p class="header-sub">Objective &amp; Subjective Assessment · Point-Based Scoring</p>
+  <div class="score-bar">
+    <div class="score-chip">Objective Questions<span id="live-obj">0 / 30</span></div>
+    <div class="score-chip">Subjective Questions<span id="live-subj">0 / 20</span></div>
+    <div class="score-chip">Total Score<span id="live-total">0 / 50</span></div>
+  </div>
+</div>
+
+<!-- INSTRUCTIONS -->
+<div class="instructions">
+  <div class="inst-label">📋 Instructions</div>
+  <div class="inst-text">
+    <strong>Section A (Objective):</strong> 15 questions — 10 multiple choice (2 pts each) + 5 true/false (2 pts each) = 30 pts<br>
+    <strong>Section B (Subjective):</strong> 5 short-answer questions — 4 pts each = 20 pts (self-assessed after model answer is revealed)<br>
+    <strong>Total:</strong> 50 points &nbsp;·&nbsp; Click <em>Submit Assessment</em> when done. Subjective answers auto-reveal for self-grading.
+  </div>
+</div>
+
+<!-- ─── SECTION A: OBJECTIVE ─── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">A</div>
+    <div class="section-meta">
+      <div class="section-tag">Section A</div>
+      <div class="section-title">Objective Questions</div>
+    </div>
+    <div class="section-pts">30 Points</div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="prog-track"><div class="prog-fill" id="obj-prog"></div></div>
+    <div class="prog-label" id="obj-prog-lbl">0 / 15</div>
+  </div>
+
+  <!-- MCQ 1 -->
+  <div class="q-card" id="qc1">
+    <div class="q-num">Question 1 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">What is the primary function of the respiratory system?</div>
+    <div class="options" id="q1">
+      <div class="opt" onclick="selectMCQ('q1','A','C')"><div class="opt-letter">A</div><div class="opt-text">Pumping blood throughout the body</div></div>
+      <div class="opt" onclick="selectMCQ('q1','B','C')"><div class="opt-letter">B</div><div class="opt-text">Digesting and absorbing nutrients</div></div>
+      <div class="opt" onclick="selectMCQ('q1','C','C')"><div class="opt-letter">C</div><div class="opt-text">Gas exchange — delivering oxygen to cells and removing carbon dioxide</div></div>
+      <div class="opt" onclick="selectMCQ('q1','D','C')"><div class="opt-letter">D</div><div class="opt-text">Filtering waste products from the blood</div></div>
+    </div>
+    <div class="feedback" id="fb-q1"></div>
+  </div>
+
+  <!-- MCQ 2 -->
+  <div class="q-card">
+    <div class="q-num">Question 2 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">How many C-shaped cartilage rings reinforce the trachea?</div>
+    <div class="options" id="q2">
+      <div class="opt" onclick="selectMCQ('q2','A','B')"><div class="opt-letter">A</div><div class="opt-text">5 – 8 rings</div></div>
+      <div class="opt" onclick="selectMCQ('q2','B','B')"><div class="opt-letter">B</div><div class="opt-text">16 – 20 rings</div></div>
+      <div class="opt" onclick="selectMCQ('q2','C','B')"><div class="opt-letter">C</div><div class="opt-text">25 – 30 rings</div></div>
+      <div class="opt" onclick="selectMCQ('q2','D','B')"><div class="opt-letter">D</div><div class="opt-text">10 – 12 rings</div></div>
+    </div>
+    <div class="feedback" id="fb-q2"></div>
+  </div>
+
+  <!-- MCQ 3 -->
+  <div class="q-card">
+    <div class="q-num">Question 3 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">The right lung differs from the left lung in that it has:</div>
+    <div class="options" id="q3">
+      <div class="opt" onclick="selectMCQ('q3','A','A')"><div class="opt-letter">A</div><div class="opt-text">3 lobes and weighs approximately 700 g</div></div>
+      <div class="opt" onclick="selectMCQ('q3','B','A')"><div class="opt-letter">B</div><div class="opt-text">2 lobes and weighs approximately 600 g</div></div>
+      <div class="opt" onclick="selectMCQ('q3','C','A')"><div class="opt-letter">C</div><div class="opt-text">4 lobes and is smaller to accommodate the heart</div></div>
+      <div class="opt" onclick="selectMCQ('q3','D','A')"><div class="opt-letter">D</div><div class="opt-text">3 lobes and contains a cardiac notch</div></div>
+    </div>
+    <div class="feedback" id="fb-q3"></div>
+  </div>
+
+  <!-- MCQ 4 -->
+  <div class="q-card">
+    <div class="q-num">Question 4 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">Approximately how many alveoli are present in the human lungs?</div>
+    <div class="options" id="q4">
+      <div class="opt" onclick="selectMCQ('q4','A','C')"><div class="opt-letter">A</div><div class="opt-text">30 million</div></div>
+      <div class="opt" onclick="selectMCQ('q4','B','C')"><div class="opt-letter">B</div><div class="opt-text">100 million</div></div>
+      <div class="opt" onclick="selectMCQ('q4','C','C')"><div class="opt-letter">C</div><div class="opt-text">300 million</div></div>
+      <div class="opt" onclick="selectMCQ('q4','D','C')"><div class="opt-letter">D</div><div class="opt-text">500 million</div></div>
+    </div>
+    <div class="feedback" id="fb-q4"></div>
+  </div>
+
+  <!-- MCQ 5 -->
+  <div class="q-card">
+    <div class="q-num">Question 5 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">Which muscle is responsible for approximately 80% of the work during breathing?</div>
+    <div class="options" id="q5">
+      <div class="opt" onclick="selectMCQ('q5','A','B')"><div class="opt-letter">A</div><div class="opt-text">Intercostal muscles</div></div>
+      <div class="opt" onclick="selectMCQ('q5','B','B')"><div class="opt-letter">B</div><div class="opt-text">Diaphragm</div></div>
+      <div class="opt" onclick="selectMCQ('q5','C','B')"><div class="opt-letter">C</div><div class="opt-text">Abdominal muscles</div></div>
+      <div class="opt" onclick="selectMCQ('q5','D','B')"><div class="opt-letter">D</div><div class="opt-text">Trapezius muscle</div></div>
+    </div>
+    <div class="feedback" id="fb-q5"></div>
+  </div>
+
+  <!-- MCQ 6 -->
+  <div class="q-card">
+    <div class="q-num">Question 6 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">What is the total surface area of the alveoli available for gas exchange?</div>
+    <div class="options" id="q6">
+      <div class="opt" onclick="selectMCQ('q6','A','D')"><div class="opt-letter">A</div><div class="opt-text">~10 m²</div></div>
+      <div class="opt" onclick="selectMCQ('q6','B','D')"><div class="opt-letter">B</div><div class="opt-text">~30 m²</div></div>
+      <div class="opt" onclick="selectMCQ('q6','C','D')"><div class="opt-letter">C</div><div class="opt-text">~50 m²</div></div>
+      <div class="opt" onclick="selectMCQ('q6','D','D')"><div class="opt-letter">D</div><div class="opt-text">~70 m²</div></div>
+    </div>
+    <div class="feedback" id="fb-q6"></div>
+  </div>
+
+  <!-- MCQ 7 -->
+  <div class="q-card">
+    <div class="q-num">Question 7 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">The trachea bifurcates (divides into two bronchi) at which vertebral level?</div>
+    <div class="options" id="q7">
+      <div class="opt" onclick="selectMCQ('q7','A','B')"><div class="opt-letter">A</div><div class="opt-text">C3 – C4</div></div>
+      <div class="opt" onclick="selectMCQ('q7','B','B')"><div class="opt-letter">B</div><div class="opt-text">T4 – T5</div></div>
+      <div class="opt" onclick="selectMCQ('q7','C','B')"><div class="opt-letter">C</div><div class="opt-text">L1 – L2</div></div>
+      <div class="opt" onclick="selectMCQ('q7','D','B')"><div class="opt-letter">D</div><div class="opt-text">T10 – T12</div></div>
+    </div>
+    <div class="feedback" id="fb-q7"></div>
+  </div>
+
+  <!-- MCQ 8 -->
+  <div class="q-card">
+    <div class="q-num">Question 8 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">During quiet (passive) exhalation, which statement is correct?</div>
+    <div class="options" id="q8">
+      <div class="opt" onclick="selectMCQ('q8','A','C')"><div class="opt-letter">A</div><div class="opt-text">The diaphragm contracts forcefully to push air out</div></div>
+      <div class="opt" onclick="selectMCQ('q8','B','C')"><div class="opt-letter">B</div><div class="opt-text">Abdominal muscles drive all exhalation at rest</div></div>
+      <div class="opt" onclick="selectMCQ('q8','C','C')"><div class="opt-letter">C</div><div class="opt-text">The diaphragm relaxes and lung elasticity passively expels air</div></div>
+      <div class="opt" onclick="selectMCQ('q8','D','C')"><div class="opt-letter">D</div><div class="opt-text">The intercostal muscles actively compress the rib cage</div></div>
+    </div>
+    <div class="feedback" id="fb-q8"></div>
+  </div>
+
+  <!-- MCQ 9 -->
+  <div class="q-card">
+    <div class="q-num">Question 9 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">What percentage of oxygen is found in inhaled (atmospheric) air?</div>
+    <div class="options" id="q9">
+      <div class="opt" onclick="selectMCQ('q9','A','B')"><div class="opt-letter">A</div><div class="opt-text">16%</div></div>
+      <div class="opt" onclick="selectMCQ('q9','B','B')"><div class="opt-letter">B</div><div class="opt-text">21%</div></div>
+      <div class="opt" onclick="selectMCQ('q9','C','B')"><div class="opt-letter">C</div><div class="opt-text">4%</div></div>
+      <div class="opt" onclick="selectMCQ('q9','D','B')"><div class="opt-letter">D</div><div class="opt-text">78%</div></div>
+    </div>
+    <div class="feedback" id="fb-q9"></div>
+  </div>
+
+  <!-- MCQ 10 -->
+  <div class="q-card">
+    <div class="q-num">Question 10 <span class="q-pts-badge">2 pts</span></div>
+    <div class="q-text">Why do inhaled foreign objects more often lodge in the right lung than the left?</div>
+    <div class="options" id="q10">
+      <div class="opt" onclick="selectMCQ('q10','A','A')"><div class="opt-letter">A</div><div class="opt-text">The right main bronchus is shorter and more vertical</div></div>
+      <div class="opt" onclick="selectMCQ('q10','B','A')"><div class="opt-letter">B</div><div class="opt-text">The right lung is smaller so objects fit more easily</div></div>
+      <div class="opt" onclick="selectMCQ('q10','C','A')"><div class="opt-letter">C</div><div class="opt-text">The right bronchus has more cartilage rings</div></div>
+      <div class="opt" onclick="selectMCQ('q10','D','A')"><div class="opt-letter">D</div><div class="opt-text">The cilia in the right lung are less active</div></div>
+    </div>
+    <div class="feedback" id="fb-q10"></div>
+  </div>
+
+  <!-- T/F 11 -->
+  <div class="q-card">
+    <div class="q-num">Question 11 <span class="q-pts-badge">2 pts</span> &nbsp;<span style="font-size:10px;color:#6080b0">True / False</span></div>
+    <div class="q-text">The nasal cavity can warm inhaled air from −10°C to near body temperature before it reaches the lungs.</div>
+    <div class="tf-group">
+      <div class="tf-btn" onclick="selectTF('q11','T','T')">✓ True</div>
+      <div class="tf-btn" onclick="selectTF('q11','F','T')">✗ False</div>
+    </div>
+    <div class="feedback" id="fb-q11"></div>
+  </div>
+
+  <!-- T/F 12 -->
+  <div class="q-card">
+    <div class="q-num">Question 12 <span class="q-pts-badge">2 pts</span> &nbsp;<span style="font-size:10px;color:#6080b0">True / False</span></div>
+    <div class="q-text">The left lung has three lobes, while the right lung has two lobes.</div>
+    <div class="tf-group">
+      <div class="tf-btn" onclick="selectTF('q12','T','F')">✓ True</div>
+      <div class="tf-btn" onclick="selectTF('q12','F','F')">✗ False</div>
+    </div>
+    <div class="feedback" id="fb-q12"></div>
+  </div>
+
+  <!-- T/F 13 -->
+  <div class="q-card">
+    <div class="q-num">Question 13 <span class="q-pts-badge">2 pts</span> &nbsp;<span style="font-size:10px;color:#6080b0">True / False</span></div>
+    <div class="q-text">The bronchi branch approximately 23 times from the trachea down to the alveoli.</div>
+    <div class="tf-group">
+      <div class="tf-btn" onclick="selectTF('q13','T','T')">✓ True</div>
+      <div class="tf-btn" onclick="selectTF('q13','F','T')">✗ False</div>
+    </div>
+    <div class="feedback" id="fb-q13"></div>
+  </div>
+
+  <!-- T/F 14 -->
+  <div class="q-card">
+    <div class="q-num">Question 14 <span class="q-pts-badge">2 pts</span> &nbsp;<span style="font-size:10px;color:#6080b0">True / False</span></div>
+    <div class="q-text">During gas exchange, carbon dioxide (CO₂) moves from the alveolar air into the blood.</div>
+    <div class="tf-group">
+      <div class="tf-btn" onclick="selectTF('q14','T','F')">✓ True</div>
+      <div class="tf-btn" onclick="selectTF('q14','F','F')">✗ False</div>
+    </div>
+    <div class="feedback" id="fb-q14"></div>
+  </div>
+
+  <!-- T/F 15 -->
+  <div class="q-card">
+    <div class="q-num">Question 15 <span class="q-pts-badge">2 pts</span> &nbsp;<span style="font-size:10px;color:#6080b0">True / False</span></div>
+    <div class="q-text">The mucociliary escalator moves mucus upward at a rate of 1–2 cm per minute, helping clear debris from the trachea.</div>
+    <div class="tf-group">
+      <div class="tf-btn" onclick="selectTF('q15','T','T')">✓ True</div>
+      <div class="tf-btn" onclick="selectTF('q15','F','T')">✗ False</div>
+    </div>
+    <div class="feedback" id="fb-q15"></div>
+  </div>
+</div>
+
+<!-- ─── SECTION B: SUBJECTIVE ─── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">B</div>
+    <div class="section-meta">
+      <div class="section-tag">Section B</div>
+      <div class="section-title">Subjective / Short-Answer Questions</div>
+    </div>
+    <div class="section-pts">20 Points</div>
+  </div>
+
+  <!-- S1 -->
+  <div class="q-card">
+    <div class="q-num">Question 16 <span class="q-pts-badge">4 pts</span></div>
+    <div class="q-text">Explain the role of the epiglottis and why it is important during swallowing. What happens if it fails to function correctly?</div>
+    <textarea class="subj-input" id="sq1" placeholder="Type your answer here..."></textarea>
+    <div class="model-answer" id="ma-sq1">
+      <div class="ma-label">✦ Model Answer</div>
+      <div class="ma-text">The epiglottis is a leaf-shaped flap of cartilage located at the base of the tongue above the larynx. During swallowing, it reflexively folds downward to cover the opening of the larynx (glottis), preventing food or liquids from entering the trachea and lungs. This ensures that ingested material is directed into the esophagus (digestive tract) rather than the airway. If the epiglottis fails to close properly — due to neurological problems, muscle weakness, or disease — food or liquid can enter the airway (aspiration), leading to choking, aspiration pneumonia, or respiratory distress.</div>
+    </div>
+    <div class="self-score" id="ss-sq1">
+      <span class="self-label">Self-score:</span>
+      <div class="self-btns">
+        <div class="self-btn" onclick="selfScore('sq1',4,this,'full')">4 pts — Full</div>
+        <div class="self-btn" onclick="selfScore('sq1',2,this,'half')">2 pts — Partial</div>
+        <div class="self-btn" onclick="selfScore('sq1',0,this,'zero')">0 pts — Incorrect</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="q-card">
+    <div class="q-num">Question 17 <span class="q-pts-badge">4 pts</span></div>
+    <div class="q-text">Describe the process of inhalation. What anatomical structures are involved and what pressure changes occur?</div>
+    <textarea class="subj-input" id="sq2" placeholder="Type your answer here..."></textarea>
+    <div class="model-answer" id="ma-sq2">
+      <div class="ma-label">✦ Model Answer</div>
+      <div class="ma-text">During inhalation, the diaphragm (a dome-shaped muscle below the lungs) contracts and flattens, moving downward by 1–10 cm. Simultaneously, the intercostal muscles contract to expand the rib cage outward and upward. Together, these actions increase the volume of the thoracic (chest) cavity. By Boyle's Law, as volume increases, intra-pulmonary pressure drops by approximately −2 to −3 cmH₂O below atmospheric pressure. This pressure gradient causes air to rush in through the nose or mouth, down through the pharynx, larynx, trachea, bronchi, bronchioles, and finally into the alveoli. The entire process lasts about 1.5–2 seconds for a normal tidal breath (~500 mL).</div>
+    </div>
+    <div class="self-score" id="ss-sq2">
+      <span class="self-label">Self-score:</span>
+      <div class="self-btns">
+        <div class="self-btn" onclick="selfScore('sq2',4,this,'full')">4 pts — Full</div>
+        <div class="self-btn" onclick="selfScore('sq2',2,this,'half')">2 pts — Partial</div>
+        <div class="self-btn" onclick="selfScore('sq2',0,this,'zero')">0 pts — Incorrect</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div class="q-card">
+    <div class="q-num">Question 18 <span class="q-pts-badge">4 pts</span></div>
+    <div class="q-text">What are alveoli? Describe their structure and explain how their design maximizes efficiency of gas exchange.</div>
+    <textarea class="subj-input" id="sq3" placeholder="Type your answer here..."></textarea>
+    <div class="model-answer" id="ma-sq3">
+      <div class="ma-label">✦ Model Answer</div>
+      <div class="ma-text">Alveoli are tiny, balloon-like air sacs at the end of the bronchioles where gas exchange occurs. There are approximately 300 million in the human lungs. Each alveolus is about 0.2 mm in diameter with an ultra-thin wall of only ~0.5 µm — thinner than a soap bubble. They are surrounded by a dense network of capillaries so narrow that red blood cells must pass through single-file. Their design maximizes gas exchange efficiency through: (1) enormous collective surface area (~70 m² — the size of a tennis court), (2) extremely short diffusion distance across the wall, and (3) high capillary density ensuring constant blood flow. O₂ diffuses from the alveolar air into the blood along a concentration gradient, while CO₂ moves in the opposite direction. The entire exchange occurs in under one millisecond.</div>
+    </div>
+    <div class="self-score" id="ss-sq3">
+      <span class="self-label">Self-score:</span>
+      <div class="self-btns">
+        <div class="self-btn" onclick="selfScore('sq3',4,this,'full')">4 pts — Full</div>
+        <div class="self-btn" onclick="selfScore('sq3',2,this,'half')">2 pts — Partial</div>
+        <div class="self-btn" onclick="selfScore('sq3',0,this,'zero')">0 pts — Incorrect</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="q-card">
+    <div class="q-num">Question 19 <span class="q-pts-badge">4 pts</span></div>
+    <div class="q-text">Compare the upper and lower respiratory tracts. Name at least three structures from each and describe the overall pathway of air from the environment to the alveoli.</div>
+    <textarea class="subj-input" id="sq4" placeholder="Type your answer here..."></textarea>
+    <div class="model-answer" id="ma-sq4">
+      <div class="ma-label">✦ Model Answer</div>
+      <div class="ma-text">The upper respiratory tract includes the nasal cavity, pharynx (throat), and larynx (voice box). Air first enters the nasal cavity (~10 cm long), where mucous membranes and cilia filter particles ≥10 µm, warm air to ~34°C, and humidify it. It then passes through the pharynx (~12–14 cm long, shared with the digestive system) and into the larynx (~4–5 cm, containing the vocal cords and epiglottis). The lower respiratory tract includes the trachea, bronchi, bronchioles, and alveoli. From the larynx, air enters the trachea (~11 cm, reinforced by 16–20 cartilage rings), which bifurcates at the carina (T4–T5) into the right and left main bronchi. These branch 23 times (bronchioles becoming progressively smaller) until reaching the terminal and respiratory bronchioles, finally emptying into the alveoli where gas exchange occurs. The total airway pathway is approximately 2,400 km if stretched.</div>
+    </div>
+    <div class="self-score" id="ss-sq4">
+      <span class="self-label">Self-score:</span>
+      <div class="self-btns">
+        <div class="self-btn" onclick="selfScore('sq4',4,this,'full')">4 pts — Full</div>
+        <div class="self-btn" onclick="selfScore('sq4',2,this,'half')">2 pts — Partial</div>
+        <div class="self-btn" onclick="selfScore('sq4',0,this,'zero')">0 pts — Incorrect</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="q-card">
+    <div class="q-num">Question 20 <span class="q-pts-badge">4 pts</span></div>
+    <div class="q-text">A patient has a damaged diaphragm following a traumatic injury. Predict the consequences for their breathing. How might the body compensate?</div>
+    <textarea class="subj-input" id="sq5" placeholder="Type your answer here..."></textarea>
+    <div class="model-answer" id="ma-sq5">
+      <div class="ma-label">✦ Model Answer</div>
+      <div class="ma-text">The diaphragm performs approximately 80% of the work of normal breathing. Damage to it would severely impair inhalation: the patient would be unable to generate the normal downward movement of the diaphragm that increases thoracic volume and drops intrapulmonary pressure. Consequently, tidal volume (normally ~500 mL) would decrease significantly, leading to shallow breathing, reduced gas exchange, hypoxia (low O₂) and hypercapnia (elevated CO₂). The body might compensate by recruiting accessory muscles of respiration — including the intercostal muscles, scalenes, sternocleidomastoid, and abdominal muscles — to expand the rib cage and expel air. In severe cases, mechanical ventilation may be required. Residual volume (~1,200 mL) would remain in the lungs but functional reserve capacity would be reduced, increasing the risk of atelectasis (lung collapse).</div>
+    </div>
+    <div class="self-score" id="ss-sq5">
+      <span class="self-label">Self-score:</span>
+      <div class="self-btns">
+        <div class="self-btn" onclick="selfScore('sq5',4,this,'full')">4 pts — Full</div>
+        <div class="self-btn" onclick="selfScore('sq5',2,this,'half')">2 pts — Partial</div>
+        <div class="self-btn" onclick="selfScore('sq5',0,this,'zero')">0 pts — Incorrect</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="actions">
+  <button class="btn-primary" id="submit-btn" onclick="submitAssessment()">Submit Assessment</button>
+  <button class="btn-secondary" onclick="resetAssessment()">Reset</button>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results-box">
+  <div class="res-title">Assessment Complete</div>
+  <div class="res-score" id="res-score">0</div>
+  <div class="res-total">out of 50 points</div>
+  <div class="res-grade" id="res-grade"></div>
+  <div class="res-msg" id="res-msg"></div>
+  <div class="res-bars">
+    <div class="res-bar"><div class="rb-label">Objective</div><div class="rb-val" id="rb-obj">0</div><div class="rb-max">out of 30</div></div>
+    <div class="res-bar"><div class="rb-label">Subjective</div><div class="rb-val" id="rb-subj">0</div><div class="rb-max">out of 20</div></div>
+    <div class="res-bar"><div class="rb-label">Percentage</div><div class="rb-val" id="rb-pct">0%</div><div class="rb-max">of total marks</div></div>
+  </div>
+</div>
+
+<script>
+const state = {
+  mcq: {q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null},
+  tf: {q11:null,q12:null,q13:null,q14:null,q15:null},
+  subj: {sq1:0,sq2:0,sq3:0,sq4:0,sq5:0},
+  submitted: false
+};
+
+const correct = {q1:'C',q2:'B',q3:'A',q4:'C',q5:'B',q6:'D',q7:'B',q8:'C',q9:'B',q10:'A',q11:'T',q12:'F',q13:'T',q14:'F',q15:'T'};
+
+function selectMCQ(qid, chosen, ans) {
+  if(state.submitted) return;
+  state.mcq[qid] = chosen;
+  const opts = document.querySelectorAll('#'+qid+' .opt');
+  opts.forEach((o,i)=>{
+    o.classList.remove('selected');
+    const letters = ['A','B','C','D'];
+    if(letters[i]===chosen) o.classList.add('selected');
+  });
+  updateProgress();
+}
+
+function selectTF(qid, chosen, ans) {
+  if(state.submitted) return;
+  state.tf[qid] = chosen;
+  const btns = document.querySelectorAll('[onclick*="'+qid+'"]');
+  btns.forEach(b=>{b.classList.remove('selected');});
+  event.target.classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const objTotal = 15;
+  const answered = Object.values(state.mcq).filter(v=>v!==null).length +
+                   Object.values(state.tf).filter(v=>v!==null).length;
+  document.getElementById('obj-prog').style.width = (answered/objTotal*100)+'%';
+  document.getElementById('obj-prog-lbl').textContent = answered+' / '+objTotal;
+}
+
+function submitAssessment() {
+  if(state.submitted) return;
+  state.submitted = true;
+  document.getElementById('submit-btn').disabled = true;
+
+  let objScore = 0;
+
+  // Grade MCQ
+  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'].forEach(qid=>{
+    const chosen = state.mcq[qid];
+    const ans = correct[qid];
+    const fb = document.getElementById('fb-'+qid);
+    const opts = document.querySelectorAll('#'+qid+' .opt');
+    const letters = ['A','B','C','D'];
+    opts.forEach((o,i)=>{
+      o.onclick = null;
+      if(letters[i]===ans) o.classList.add(chosen===ans?'correct':'reveal-correct');
+      else if(letters[i]===chosen && chosen!==ans) o.classList.add('wrong');
+    });
+    if(chosen===ans){
+      objScore+=2;
+      fb.textContent='✓ Correct! +2 points';
+      fb.className='feedback show ok';
+    } else {
+      fb.textContent = chosen ? '✗ Incorrect. The correct answer is '+ans+'.' : '✗ Not answered. Correct answer: '+ans+'.';
+      fb.className='feedback show no';
+    }
+  });
+
+  // Grade T/F
+  ['q11','q12','q13','q14','q15'].forEach(qid=>{
+    const chosen = state.tf[qid];
+    const ans = correct[qid];
+    const fb = document.getElementById('fb-'+qid);
+    const btns = document.querySelectorAll('[onclick*="\''+qid+'\'"]');
+    btns.forEach(b=>{
+      b.onclick = null;
+      const isTrue = b.textContent.includes('True');
+      const btnVal = isTrue ? 'T' : 'F';
+      if(btnVal===ans) b.classList.add(chosen===ans?'correct':'reveal-correct');
+      else if(btnVal===chosen && chosen!==ans) b.classList.add('wrong');
+    });
+    if(chosen===ans){
+      objScore+=2;
+      fb.textContent='✓ Correct! +2 points';
+      fb.className='feedback show ok';
+    } else {
+      const corText = ans==='T'?'True':'False';
+      fb.textContent = chosen ? '✗ Incorrect. The correct answer is '+corText+'.' : '✗ Not answered. Correct answer: '+corText+'.';
+      fb.className='feedback show no';
+    }
+  });
+
+  // Reveal subjective model answers
+  ['sq1','sq2','sq3','sq4','sq5'].forEach(sid=>{
+    document.getElementById('ma-'+sid).classList.add('show');
+    document.getElementById('ss-'+sid).classList.add('show');
+    document.getElementById(sid).disabled = true;
+  });
+
+  updateScoreDisplay(objScore, 0);
+  document.getElementById('results-box').classList.add('show');
+  document.getElementById('results-box').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function selfScore(sid, pts, btn, level) {
+  if(!state.submitted) return;
+  state.subj[sid] = pts;
+  const siblingBtns = btn.parentElement.querySelectorAll('.self-btn');
+  siblingBtns.forEach(b=>b.className='self-btn');
+  btn.classList.add('selected-'+level);
+  recalcSubj();
+}
+
+function recalcSubj() {
+  const subjTotal = Object.values(state.subj).reduce((a,b)=>a+b,0);
+  const objScore = calcObjScore();
+  updateScoreDisplay(objScore, subjTotal);
+}
+
+function calcObjScore() {
+  let score = 0;
+  ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'].forEach(qid=>{
+    if(state.mcq[qid]===correct[qid]) score+=2;
+  });
+  ['q11','q12','q13','q14','q15'].forEach(qid=>{
+    if(state.tf[qid]===correct[qid]) score+=2;
+  });
+  return score;
+}
+
+function updateScoreDisplay(objScore, subjScore) {
+  const total = objScore + subjScore;
+  const pct = Math.round(total/50*100);
+  document.getElementById('live-obj').textContent = objScore+' / 30';
+  document.getElementById('live-subj').textContent = subjScore+' / 20';
+  document.getElementById('live-total').textContent = total+' / 50';
+  document.getElementById('res-score').textContent = total;
+  document.getElementById('rb-obj').textContent = objScore;
+  document.getElementById('rb-subj').textContent = subjScore;
+  document.getElementById('rb-pct').textContent = pct+'%';
+
+  let grade='', msg='';
+  if(pct>=90){grade='🏆 Outstanding — A+';msg='Exceptional performance! You have mastered the respiratory system. Your understanding of anatomy, physiology, and clinical application is excellent.';}
+  else if(pct>=80){grade='🥇 Excellent — A';msg='Great work! You have a strong grasp of the respiratory system. Review any missed questions to achieve mastery.';}
+  else if(pct>=70){grade='🥈 Good — B';msg='Good effort! You understand the core concepts. Focus on gas exchange, lung anatomy, and the mechanics of breathing to improve further.';}
+  else if(pct>=60){grade='🥉 Satisfactory — C';msg='You have a basic understanding, but key areas need revision. Re-study the alveoli, bronchial tree, and breathing mechanics.';}
+  else if(pct>=50){grade='📚 Needs Improvement — D';msg='You have passed, but significant revision is needed. Go back through the video lesson and focus on the structure and function of each anatomical component.';}
+  else{grade='❌ Below Pass — F';msg='More study is needed. Revisit the respiratory system lesson carefully. Pay special attention to the pathway of air, the role of each structure, and gas exchange at the alveoli.';}
+
+  document.getElementById('res-grade').textContent = grade;
+  document.getElementById('res-msg').textContent = msg;
+}
+
+function resetAssessment() {
+  location.reload();
+}
+</script>
+</body>
+</html>
